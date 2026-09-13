@@ -1,0 +1,75 @@
+import { Product, TestCard } from '../types';
+
+export const PRODUCTS: Product[] = [
+  {
+    id: 'prod_starter',
+    name: 'Starter Plan',
+    description: 'Essential billing and developer infrastructure for modern SaaS.',
+    amount: 19.0,
+    currency: 'USD',
+    interval: 'month',
+    features: ['Up to 50,000 monthly API calls', 'Standard developer support', 'Dodo MoR Global Tax Automation', 'Complete SDK & Webhook access'],
+    category: 'Subscription',
+  },
+  {
+    id: 'prod_pro',
+    name: 'Pro Plan',
+    description: 'Our most popular tier for high-growth apps and scaling platforms.',
+    amount: 49.0,
+    currency: 'USD',
+    interval: 'month',
+    popular: true,
+    features: ['500,000 monthly API calls', 'High-throughput processing priority', 'Usage-based metering overage', 'Dedicated Slack channel', 'Priority email & webhook alerts'],
+    category: 'Subscription',
+  },
+  {
+    id: 'prod_enterprise',
+    name: 'Enterprise Scale',
+    description: 'Full-scale monetization infrastructure with custom limits & SLAs.',
+    amount: 199.0,
+    currency: 'USD',
+    interval: 'month',
+    features: ['Unlimited API volume', 'Dedicated regional cluster routing', 'Multi-tenant seat billing', 'Custom MoR contract & SLA', '24/7 dedicated engineering line'],
+    category: 'Subscription',
+  },
+  {
+    id: 'prod_credits_pack',
+    name: 'Compute Add-on',
+    description: 'One-time compute boost that never expires. Ideal for spiky workloads.',
+    amount: 15.0,
+    currency: 'USD',
+    interval: 'one-time',
+    features: ['1,000,000 Compute units', 'Valid across all endpoints', 'Zero expiration', 'Instant top-up'],
+    category: 'Usage / Add-on',
+  },
+];
+
+export const TEST_CARDS: TestCard[] = [
+  {
+    number: '4242424242424242',
+    formatted: '4242 4242 4242 4242',
+    label: 'Standard Success',
+    behavior: 'success',
+    description: 'Always approves immediately. Simulates clean authorization and funds settlement.',
+    cvc: '123',
+    exp: '12/28',
+  },
+  {
+    number: '4000000000000002',
+    formatted: '4000 0000 0000 0002',
+    label: 'Card Declined',
+    behavior: 'decline',
+    description: 'Always declines. Tests card decline error state (insufficient funds / bank block).',
+    cvc: '456',
+    exp: '08/29',
+  },
+  {
+    number: '4000000000000341',
+    formatted: '4000 0000 0000 0341',
+    label: 'Fail Once, Then Succeed',
+    behavior: 'fail_then_succeed',
+    description: 'Fails on attempt #1 (transient network gateway drop), then succeeds on retry.',
+    cvc: '789',
+    exp: '11/27',
+  },
+];
