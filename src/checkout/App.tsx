@@ -37,7 +37,10 @@ export default function CheckoutApp() {
 
   return (
     <div
-      className="min-h-screen flex flex-col justify-between text-sm font-sans antialiased bg-[var(--color-canvas)] text-[var(--color-text-primary)] selection:bg-[var(--brand-primary)] selection:text-[var(--brand-text)]"
+      className={`min-h-screen flex flex-col justify-between text-sm font-sans antialiased bg-[var(--color-canvas)] text-[var(--color-text-primary)] selection:bg-[var(--brand-primary)] selection:text-[var(--brand-text)] ${
+        isDark ? 'dark bg-[#0E0F12] text-[#F5F5F5]' : 'bg-[#FFFFFF] text-[#171717]'
+      }`}
+      data-theme={isDark ? 'dark' : 'light'}
     >
       {/* Checkout Top Header */}
       <CheckoutHeader onClose={() => handleRequestClose('user_closed')} />

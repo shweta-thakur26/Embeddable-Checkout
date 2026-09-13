@@ -32,7 +32,7 @@ export const CardBrandBadge: React.FC<CardBrandBadgeProps> = ({ brand }) => {
         </span>
       );
     default:
-      return <CreditCard className="w-4 h-4 text-slate-500" />;
+      return <CreditCard className="w-4 h-4 text-[var(--color-text-muted)]" />;
   }
 };
 

@@ -219,7 +219,14 @@ export class DodoCheckoutSDK {
     if (options.title) url.searchParams.set('title', options.title);
     if (options.customerEmail) url.searchParams.set('customerEmail', options.customerEmail);
     if (options.customerName) url.searchParams.set('customerName', options.customerName);
-    if (options.theme) url.searchParams.set('theme', options.theme);
+    
+    const isDarkTheme =
+      options.theme === 'dark' ||
+      (options.theme !== 'light' &&
+        typeof document !== 'undefined' &&
+        (document.documentElement.classList.contains('dark') ||
+          document.documentElement.getAttribute('data-theme') === 'dark'));
+    url.searchParams.set('theme', isDarkTheme ? 'dark' : 'light');
     if (options.mode) url.searchParams.set('mode', options.mode);
 
     const currentBrandColor =
@@ -242,6 +249,14 @@ export class DodoCheckoutSDK {
     document.body.style.overflow = 'hidden';
     if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
 
+    const isDark =
+      options.theme === 'dark' ||
+      (options.theme !== 'light' &&
+        typeof document !== 'undefined' &&
+        (document.documentElement.classList.contains('dark') ||
+          document.documentElement.getAttribute('data-theme') === 'dark'));
+    const isLight = !isDark;
+
     const overlay = document.createElement('div');
     overlay.id = 'dodo-checkout-overlay';
     overlay.setAttribute('role', 'dialog');
@@ -252,7 +267,9 @@ export class DodoCheckoutSDK {
       inset: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(9, 9, 11, 0.82);
+      background: ${isLight ? 'rgba(9, 9, 11, 0.72)' : 'rgba(0, 0, 0, 0.85)'};
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       z-index: 999999;
       display: flex;
       align-items: center;
@@ -263,7 +280,6 @@ export class DodoCheckoutSDK {
       box-sizing: border-box;
     `;
 
-    const isLight = options.theme !== 'dark';
     const frameWrapper = document.createElement('div');
     frameWrapper.id = 'dodo-checkout-modal-container';
     frameWrapper.style.cssText = `
@@ -272,14 +288,14 @@ export class DodoCheckoutSDK {
       max-width: 490px;
       height: 100%;
       max-height: min(740px, 96vh);
-      background: ${isLight ? '#FFFFFF' : '#08090A'};
-      border-radius: 12px;
+      background: ${isLight ? '#FFFFFF' : '#0E0F12'};
+      border-radius: 14px;
       box-shadow: ${
         isLight
           ? '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)'
-          : '0 25px 50px -12px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
+          : '0 25px 50px -12px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.08)'
       };
-      border: 1px solid ${isLight ? '#E2E8F0' : 'rgba(255, 255, 255, 0.08)'};
+      border: 1px solid ${isLight ? '#E2E8F0' : '#262930'};
       overflow: hidden;
       transform: scale(0.97) translateY(8px);
       transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), height 200ms ease;
@@ -339,7 +355,13 @@ export class DodoCheckoutSDK {
   }
 
   private static createLoader(theme?: 'dark' | 'light' | 'auto'): HTMLDivElement {
-    const isLight = theme !== 'dark';
+    const isDark =
+      theme === 'dark' ||
+      (theme !== 'light' &&
+        typeof document !== 'undefined' &&
+        (document.documentElement.classList.contains('dark') ||
+          document.documentElement.getAttribute('data-theme') === 'dark'));
+    const isLight = !isDark;
     const loader = document.createElement('div');
     loader.id = 'dodo-checkout-loader';
     loader.style.cssText = `
@@ -351,8 +373,8 @@ export class DodoCheckoutSDK {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: ${isLight ? '#FFFFFF' : '#08090A'};
-      color: ${isLight ? '#64748B' : '#9CA3AF'};
+      background: ${isLight ? '#FFFFFF' : '#0E0F12'};
+      color: ${isLight ? '#64748B' : '#A0A0A0'};
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       font-size: 13px;
       z-index: 10;
@@ -360,8 +382,8 @@ export class DodoCheckoutSDK {
       transition: opacity 180ms ease;
     `;
     loader.innerHTML = `
-      <div style="width: 32px; height: 32px; border: 2px solid ${isLight ? '#E2E8F0' : 'rgba(255,255,255,0.08)'}; border-top-color: ${isLight ? '#0F172A' : '#C6FE1E'}; border-radius: 50%; animation: dodo-spin 0.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;"></div>
-      <div style="font-weight: 600; color: ${isLight ? '#0F172A' : '#FFFFFF'}; display: flex; align-items: center; gap: 6px; font-size: 13px;">
+      <div style="width: 32px; height: 32px; border: 2px solid ${isLight ? '#E2E8F0' : '#262930'}; border-top-color: ${isLight ? '#0F172A' : '#B6FF00'}; border-radius: 50%; animation: dodo-spin 0.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;"></div>
+      <div style="font-weight: 600; color: ${isLight ? '#0F172A' : '#F5F5F5'}; display: flex; align-items: center; gap: 6px; font-size: 13px;">
         <span>Opening secure checkout</span>
       </div>
       <style>@keyframes dodo-spin { to { transform: rotate(360deg); } }</style>

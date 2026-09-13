@@ -52,7 +52,7 @@ export default function App() {
 
   return (
     <div
-      className={`min-h-screen app-bg-transition flex flex-col font-sans relative overflow-x-hidden ${
+      className={`min-h-screen app-bg-transition flex flex-col font-sans relative overflow-x-clip ${
         isDark ? 'dark bg-[#0A0C12] text-slate-100' : 'bg-slate-50 text-slate-900'
       }`}
       data-theme={themeMode}

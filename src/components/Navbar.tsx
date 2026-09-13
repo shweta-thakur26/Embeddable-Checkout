@@ -75,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header
       id="main-navbar"
       ref={menuRef}
-      className={`sticky top-0 z-40 w-full transition-colors duration-200 border-b backdrop-blur-md ${
+      className={`sticky top-0 z-50 w-full transition-colors duration-200 border-b backdrop-blur-md ${
         isDark
           ? 'bg-[#080B11]/90 border-slate-800/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.5)]'
           : 'bg-white/90 border-[var(--color-border)] shadow-[0_2px_12px_-2px_rgba(0,0,0,0.03)]'

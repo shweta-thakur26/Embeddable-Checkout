@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { PRODUCTS } from '../../data/products';
 import { Product, DodoPostMessage } from '../../types';
 import { CHECKOUT_SOURCE, PROTOCOL_VERSION } from '../../sdk/messageProtocol';
@@ -32,8 +32,25 @@ export function useCheckoutSession(): {
   const initialName = searchParams.get('customerName') || '';
   const initialTheme = searchParams.get('theme') || 'light';
   const initialThemeColor = searchParams.get('themeColor');
-  const isDark = initialTheme === 'dark';
+  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>(initialTheme === 'dark' ? 'dark' : 'light');
+  const isDark = currentTheme === 'dark';
   const parentOrigin = useMemo(() => getParentOrigin(), []);
+
+  // Synchronize theme to document root & body
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDark) {
+      root.classList.add('dark');
+      root.setAttribute('data-theme', 'dark');
+      root.style.colorScheme = 'dark';
+      document.body.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+      root.setAttribute('data-theme', 'light');
+      root.style.colorScheme = 'light';
+      document.body.classList.remove('dark');
+    }
+  }, [isDark]);
 
   // Theme color setup and dynamic postMessage listener
   useEffect(() => {
@@ -42,12 +59,17 @@ export function useCheckoutSession(): {
       document.documentElement.style.setProperty('--color-accent', initialThemeColor);
     }
     const handleThemeMessage = (e: MessageEvent) => {
-      if (e.data?.source === 'dodo-theme-manager' && e.data?.themeColor) {
-        document.documentElement.style.setProperty('--brand-primary', e.data.themeColor);
-        if (e.data.hoverColor) document.documentElement.style.setProperty('--brand-hover', e.data.hoverColor);
-        if (e.data.hoverSurface) document.documentElement.style.setProperty('--hover-surface', e.data.hoverSurface);
-        if (e.data.buttonText) document.documentElement.style.setProperty('--brand-text', e.data.buttonText);
-        document.documentElement.style.setProperty('--color-accent', e.data.themeColor);
+      if (e.data?.source === 'dodo-theme-manager') {
+        if (e.data.theme === 'dark' || e.data.theme === 'light') {
+          setCurrentTheme(e.data.theme);
+        }
+        if (e.data.themeColor) {
+          document.documentElement.style.setProperty('--brand-primary', e.data.themeColor);
+          if (e.data.hoverColor) document.documentElement.style.setProperty('--brand-hover', e.data.hoverColor);
+          if (e.data.hoverSurface) document.documentElement.style.setProperty('--hover-surface', e.data.hoverSurface);
+          if (e.data.buttonText) document.documentElement.style.setProperty('--brand-text', e.data.buttonText);
+          document.documentElement.style.setProperty('--color-accent', e.data.themeColor);
+        }
       }
     };
     window.addEventListener('message', handleThemeMessage);

@@ -100,12 +100,16 @@ export function StoreTab({
       {checkoutMode === 'inline' && (
         <div
           ref={inlineContainerRef}
-          className="p-5 rounded-xl fintech-card space-y-3"
+          className={`p-5 rounded-xl fintech-card space-y-3 ${
+            isDark ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'
+          }`}
         >
-          <div className="flex items-center justify-between pb-2.5 border-b border-slate-200">
+          <div className={`flex items-center justify-between pb-2.5 border-b ${
+            isDark ? 'border-slate-800' : 'border-slate-200'
+          }`}>
             <div className="flex items-center gap-2">
-              <Layers className="w-4 h-4 text-slate-500" />
-              <h3 className="font-bold text-sm text-slate-900 font-mono">
+              <Layers className={`w-4 h-4 ${isDark ? 'text-slate-400' : 'text-slate-500'}`} />
+              <h3 className={`font-bold text-sm font-mono ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
                 Inline Host Mounting Target: {inlineActiveProduct ? inlineActiveProduct.name : 'Awaiting Plan Selection'}
               </h3>
             </div>
@@ -115,7 +119,11 @@ export function StoreTab({
                   DodoCheckout.close('user_closed');
                   setInlineActiveProduct(null);
                 }}
-                className="min-h-[36px] px-2.5 py-1 text-xs text-slate-600 hover:text-slate-900 font-mono cursor-pointer border border-slate-200 rounded-md hover:bg-slate-50 transition-colors"
+                className={`min-h-[36px] px-2.5 py-1 text-xs font-mono cursor-pointer border rounded-md transition-colors ${
+                  isDark
+                    ? 'text-slate-300 hover:text-white border-slate-700 hover:bg-slate-800'
+                    : 'text-slate-600 hover:text-slate-900 border-slate-200 hover:bg-slate-50'
+                }`}
               >
                 [Dismiss Container]
               </button>
@@ -123,16 +131,18 @@ export function StoreTab({
           </div>
 
           {!inlineActiveProduct ? (
-            <div className="py-10 text-center text-slate-400 space-y-1.5">
-              <p className="text-xs font-medium text-slate-700">Inline container active</p>
-              <p className="text-[11px] text-slate-400 max-w-sm mx-auto">
+            <div className={`py-10 text-center space-y-1.5 ${isDark ? 'text-slate-400' : 'text-slate-400'}`}>
+              <p className={`text-xs font-medium ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>Inline container active</p>
+              <p className={`text-[11px] max-w-sm mx-auto ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                 Click &quot;Checkout with Dodo&quot; on any plan above. The checkout iframe will be mounted directly in this container.
               </p>
             </div>
           ) : (
             <div
               id="dodo-inline-checkout-container"
-              className="w-full max-w-md mx-auto bg-white rounded-lg overflow-hidden border border-slate-200 min-h-[620px] shadow-sm"
+              className={`w-full max-w-md mx-auto rounded-lg overflow-hidden min-h-[620px] shadow-sm ${
+                isDark ? 'bg-[#0E0F12] border border-[#262930]' : 'bg-white border border-slate-200'
+              }`}
             />
           )}
         </div>

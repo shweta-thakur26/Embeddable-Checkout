@@ -108,6 +108,7 @@
     background: var(--color-canvas);
     color: var(--color-text-primary);
     transition: background-color var(--transition-theme), color var(--transition-theme);
+    overflow-x: clip;
   }
 
   body {

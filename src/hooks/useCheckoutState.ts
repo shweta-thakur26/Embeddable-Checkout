@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { CallbackLogEntry, PaymentSuccessResult } from '../types';
 
 export function useCheckoutState() {
@@ -16,6 +16,22 @@ export function useCheckoutState() {
   const [activeInteraction, setActiveInteraction] = useState<string | null>(null);
 
   const isDark = themeMode === 'dark';
+
+  // Synchronize theme to document element and body
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDark) {
+      root.classList.add('dark');
+      root.setAttribute('data-theme', 'dark');
+      root.style.colorScheme = 'dark';
+      document.body.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+      root.setAttribute('data-theme', 'light');
+      root.style.colorScheme = 'light';
+      document.body.classList.remove('dark');
+    }
+  }, [isDark]);
 
   const toggleTheme = useCallback(() => {
     setThemeMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
